@@ -1,0 +1,23 @@
+package com.gov.restapi.GovRestApi;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.gov.restapi.GovRestApi.jsonUtils.JsonApi;
+
+import lombok.RequiredArgsConstructor;
+
+@SpringBootApplication
+@RequiredArgsConstructor
+public class GovRestApiApplication {
+	
+	private JsonApi jsonApi;
+
+	public static void main(String[] args) {
+		SpringApplication.run(GovRestApiApplication.class, args);
+		
+		jsonApi.callJsonAPi();
+		
+	}
+
+}

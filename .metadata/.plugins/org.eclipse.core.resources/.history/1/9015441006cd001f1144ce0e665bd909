@@ -1,0 +1,6 @@
+package com.gov.restapi.GovRestApi.jsonUtils;
+
+@SpringBootTest
+public class CallRestApiTest {
+
+}

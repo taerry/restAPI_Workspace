@@ -1,0 +1,48 @@
+package govRestApi;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class CallRestApi {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader br = null;
+		
+		try {
+			
+			//공공 API 방식 : StringBuiler 방식을 많이 사용
+			String urlStr = "https://apis.data.go.kr/B552061/jaywalking/getRestJaywalking?serviceKey=6%2BSoZrtz9bE%2F4NqwrzS7aD60NwLBIQ%2B%2BhEMzWAe%2BMl%2BG5ETMqp0u4IVMYPBje7AQ02wfi7PpEnE9jMp4y1OKWQ%3D%3D&searchYearCd=2017&siDo=11&guGun=680&type=json&numOfRows=10&pageNo=1";
+			
+			// URL 클래스로 객체를 생성 -- 2가지 방법 : 절대경로, 상대경로
+			URL url = new URL(urlStr);
+			
+			//openConnection() 메서드를 이용한 연결
+			//URL 주소의 원격 객체에 접속한 뒤 -- 통신할 수 있는 URLConnection 객체를 리턴
+			HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
+			urlConn.setRequestMethod("GET");
+			urlConn.setRequestProperty("Content-type", "application/json");
+			System.out.println("Response Code : " + urlConn.getResponseCode());
+			
+			//InputStreamReader 클래스로 읽기
+			//BufferdReader는 InputStreamReader의 객체를 입력값으로 사용
+			br = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "UTF-8"));
+			
+			//결과 변수
+//			String resStr = "";
+//			String line;
+//			while((line = br.readLine()) != null) {
+//				resStr += line + "\n";
+//			}
+//			System.out.println(resStr);
+			
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+}
