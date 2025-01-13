@@ -1,0 +1,57 @@
+[
+	{
+		"id":1,
+		"name":"홍길동",
+		"age":20,
+		"tel":"010-1234-5678",
+		"homepage":"http://www.1111.com",
+		"address":"서울시 서초구 양재동 307-12 양재로 111",
+		"gender":"Male",
+		"job":"프로그래머",
+		"hobby":"영화보기"
+	},
+	{
+		"id":2,
+		"name":"김길동",
+		"age":22,
+		"tel":"010-1234-4321",
+		"homepage":"http://www.2222.com",
+		"address":"서울시 강남구 논현동 111-12 선능로 55",
+		"gender":"Male",
+		"job":"군인",
+		"hobby":"축구"
+	},
+	{
+		"id":3,
+		"name":"홍길녀",
+		"age":32,
+		"tel":"010-4321-5678",
+		"homepage":"http://www.3333.com",
+		"address":"경기도 광명시 하안동 오리로 801",
+		"gender":"Female",
+		"job":"웹디자이너",
+		"hobby":"배드민턴"
+	},
+	{
+		"id":4,
+		"name":"박길녀",
+		"age":31,
+		"tel":"010-2345-6789",
+		"homepage":"http://www.4444.com",
+		"address":"경기도 부천시 원미구 공항로 100",
+		"gender":"Female",
+		"job":"인테리어",
+		"hobby":"여행"
+	},
+	{
+		"id":5,
+		"name":"박길동",
+		"age":35,
+		"tel":"010-1234-4433",
+		"homepage":"http://www.5555.com",
+		"address":"서울시 송파구 송파동 27-11 올림픽대로 55",
+		"gender":"Male",
+		"job":"자영업자",
+		"hobby":"배드민턴"
+	}
+]
