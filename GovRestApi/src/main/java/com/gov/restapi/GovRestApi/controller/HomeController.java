@@ -11,5 +11,10 @@ public class HomeController {
 		System.out.println("...Called HomeCotroller.home()...");
 		return "home";
 	}
+	
+	@GetMapping("/members")
+	public String getMember() {
+		return "pdataList";
+	}
 
 }

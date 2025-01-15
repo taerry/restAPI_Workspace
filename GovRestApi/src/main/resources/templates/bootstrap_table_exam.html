@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Bootstrap Table Exam</title>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--
+		1. 컨테이너 없이 테이블만 작성하면 너비가 100% 꽉 참 
+		2. 테이블 외곽에 div를 사용하고 class=table을 적용하면 양족에 마진이 생김
+	 -->
+</head>
+<body>
+	<div class="container">
+		<h2 class="display-4" style="text-align:center">
+			Bootstrap Table Example
+			<small class="text-muted">with faded secondary text</small>
+		</h2>
+		<br>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>NAME</th>
+					<th>AGE</th>
+					<th>TEL</th>
+					<th>HOMEPAGE</th>
+					<th>ADDRESS</th>
+					<th>GENDER</th>
+					<th>JOB</th>
+					<th>HOBBY</th>
+				</tr>
+			</thead>
+			<!-- JS에서 처리하여 데이터를 뿌려주게 함 -->
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
