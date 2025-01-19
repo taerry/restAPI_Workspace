@@ -1,0 +1,17 @@
+@ControllerAdvice 및 @ExceptionHandler를 사용한 예외 처리
+---------------------------------------------------------
+
+@ControllerAdvice는 애플리케이션 전체에서 발생하는 예외를 전역적으로 처리
+ : @ControllerAdvice 를 어노테이션으로 갖는 Class에서 예외를 처리하게 함
+ 
+@ExceptionHandler는 특정 예외를 처리하기 위한 메서드에 사용됩니다.
+이 메서드는 주로 컨트롤러 클래스 내에서 사용되지만, @ControllerAdvice와 함께 전역적으로도 사용할 수 있습니다.
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleException(Exception e) {
+		return new ResponseEntity<>("예외가 발생했습니다: " + e.getMessage(), 
+									HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+}

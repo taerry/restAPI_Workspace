@@ -1,0 +1,18 @@
+1. com.fasterxml.jackson.core:jackson-databind
+   - Jackson은 Java 객체와 JSON 데이터 간의 변환을 담당하는 라이브러리입니다.
+   - jackson-databind는 Jackson의 중요한 모듈 중 하나로, JSON 데이터를 Java 객체로 매핑하거나 
+     Java 객체를 JSON으로 직렬화하는 데 사용됩니다.
+   - Spring 프레임워크에서는 기본적으로 Jackson을 JSON 데이터와 Java 객체 간 변환에 사용하기 때문에, 
+     이 라이브러리를 추가하여 JSON 데이터를 처리할 수 있습니다.
+     
+2. io.springfox:springfox-swagger2
+   - Swagger는 API 문서화 및 API 테스트를 위한 도구로, 개발자들이 API를 문서화하고 시각화하는 데 사용됩니다.
+   - springfox-swagger2는 Spring 기반 프로젝트에서 Swagger를 사용할 수 있도록 지원하는 라이브러리입니다.
+   - 이 라이브러리는 Swagger 2.0 버전을 지원하며, @Api 애노테이션을 통해 API에 대한 설명을 작성하고, 
+     Swagger UI를 통해 이를 시각적으로 표현할 수 있습니다.
+     
+3. io.springfox:springfox-swagger-ui
+   - springfox-swagger-ui는 Swagger UI를 Spring 프로젝트에서 쉽게 통합하도록 도와주는 라이브러리입니다.
+   - Swagger UI는 Swagger로 문서화된 API를 시각적으로 보여주는 사용자 인터페이스입니다. 
+     API의 엔드포인트, 파라미터, 응답 등을 표시하고 테스트할 수 있는 기능을 제공합니다.
+   - 이 라이브러리를 사용하면 Swagger UI를 손쉽게 프로젝트에 통합하여 API 문서를 표시하고 API를 테스트할 수 있습니다.

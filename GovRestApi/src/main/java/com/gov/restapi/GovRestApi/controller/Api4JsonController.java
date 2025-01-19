@@ -13,8 +13,4 @@ public class Api4JsonController {
 		return "index.html";
 	}
 	
-	@GetMapping("/test")
-	public String test() {
-		return "home";
-	}
 }
