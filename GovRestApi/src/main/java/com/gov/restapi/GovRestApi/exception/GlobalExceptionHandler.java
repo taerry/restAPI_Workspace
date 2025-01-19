@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.ConstraintViolationException;
 
 // @ControllerAdvice 를 설정하면 Swagger에서 충돌이 발생하여 API 목록을 표시하지 못함. 아잭 미해결 상태임...
-@ControllerAdvice(basePackages = "com.gov.restapi.GovRestApi.restController")
+//@ControllerAdvice(basePackages = "com.gov.restapi.GovRestApi.restController")
 //@ControllerAdvice
 //@RestControllerAdvice(annotations = {RestController.class}, basePackageClasses = {DiaryController.class, MemberController.class, TransmissionController.class})/@RestController
 @RestController

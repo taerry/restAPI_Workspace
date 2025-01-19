@@ -1,0 +1,214 @@
+package com.gov.restapi.GovRestApi.restController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.gov.restapi.GovRestApi.dto.BookPayloadDTO;
+import com.gov.restapi.GovRestApi.dto.BookViewDTO;
+import com.gov.restapi.GovRestApi.entity.Book;
+import com.gov.restapi.GovRestApi.service.BookService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@Tag(name = "API related Book", description = "책을 관리하기 위한 API")
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
+public class BookRestController {
+	
+	//@Autowired
+	private final BookService bookService;
+	
+	@PostMapping(value="/books", consumes="application/json", produces="application/json")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ApiResponse(responseCode = "400", description = "Please add valid name a description")
+	@ApiResponse(responseCode = "200", description = "Book added")
+//	@Tag(name="BOOK API")
+	@Operation(summary="Add an Book", description="책을 추가합니다.")
+	// 데이터를 받을때 사용하는 DTO(Payload : 전송되는 순수한 데이터) 
+	public ResponseEntity<BookViewDTO> addBook(@Valid @RequestBody BookPayloadDTO bookPayload) {
+// @@ControllerAdvice 를 어노테이션한 GlovalExceptionHandler 클래스를 만들어 try ~ catch문을 제거함...
+//		try {
+//			Book book = new Book();
+//			System.out.println(".........Book Subject from bookPayload: " + bookPayload.getSubject());
+//			book.setSubject(bookPayload.getSubject());
+//			book.setPrice(bookPayload.getPrice());
+//			book.setAuthor(bookPayload.getAuthor());
+//			book.setPage(bookPayload.getPage());
+//			System.out.println(".........Book Subject from book object : " + book.getSubject());
+//			book = bookService.save(book);
+//			
+//			BookViewDTO bookViewDTO = new BookViewDTO(book.getId(), book.getSubject(), book.getPrice(), book.getAuthor(), book.getPage(), book.getCreatedAt(), book.getUpdatedAt());
+//			return ResponseEntity.ok(bookViewDTO);	// (200:OK + JSON Data) : ResponseEntity
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//		}
+		Book book = new Book();
+		book.setSubject(bookPayload.getSubject());
+		book.setPrice(bookPayload.getPrice());
+		book.setAuthor(bookPayload.getAuthor());
+		book.setPage(bookPayload.getPage());
+		book = bookService.save(book);
+		
+		BookViewDTO bookViewDTO = new BookViewDTO(book.getId(), book.getSubject(), book.getPrice(), book.getAuthor(), book.getPage(), book.getCreatedAt(), book.getUpdatedAt());
+		return ResponseEntity.ok(bookViewDTO);	// (200:OK + JSON Data) : ResponseEntity
+	}
+	
+	// 전체 목록 보여주기
+	@GetMapping(value = "/books", produces = "application/json")
+	@ApiResponse(responseCode = "200", description = "List of books")
+	@Operation(summary="List book API")
+	public List<BookViewDTO> books() {
+		List<BookViewDTO> books=new ArrayList<>();
+		for(Book book : bookService.getAllBooks()) {
+			books.add(new BookViewDTO(book.getId(), book.getSubject(), book.getPrice(), book.getAuthor(), book.getPage(), book.getCreatedAt(), book.getUpdatedAt()));
+		} 
+		
+		return books;// JSON Array :[{ },{ }…]}
+	}
+	
+	// 특정 목록 보여주기
+	@GetMapping(value = "/books/{id}", produces = "application/json")
+	@ApiResponse(responseCode = "200", description = "“id에 해당하는 책정보를 출력\"")
+//	@ApiResponse(responseCode = "400", description = "“id에 해당하는 책이 없습니다.\"")
+	@Operation(summary="book id API")
+	public ResponseEntity<?> findById(@PathVariable Long id) {
+		Optional<Book> optionalBook=bookService.findById(id);
+//		Book book;
+//		if(optionalBook.isPresent()) {
+//			book=optionalBook.get();
+//		}else {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//		}
+		if (optionalBook.isEmpty()){
+			throw new NoSuchElementException("Book with id " + id + " not found");
+		}
+		Book book = optionalBook.get();
+		BookViewDTO bookViewDTO = new BookViewDTO(book.getId(), book.getSubject(), book.getPrice(), book.getAuthor(), book.getPage(), book.getCreatedAt(), book.getUpdatedAt());
+		return ResponseEntity.ok(bookViewDTO);
+	}
+	
+	// 수정하기
+	@PutMapping(value = "/books/{id}", consumes = "application/json",produces = "application/json")
+	@ResponseStatus(HttpStatus.CREATED)@ApiResponse(responseCode = "400", description = "Please add valid name a description")
+	@ApiResponse(responseCode = "204", description = "Book update")
+	@Operation(summary = "Update an Book")
+	public ResponseEntity<?> update_Book(@Valid @RequestBody BookPayloadDTO bookPayloadDTO,@PathVariable Long id) {
+		Optional<Book> optionalBook=bookService.findById(id);
+//		Book book;
+//		if(optionalBook.isPresent()) {
+//			book=optionalBook.get();
+//		}else {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//		} 
+		if (optionalBook.isEmpty()) {
+			throw new NoSuchElementException("Book with id " + id + " not found");
+		}
+		Book book = optionalBook.get();
+		// 수정되는 데이터 교체
+		book.setSubject(bookPayloadDTO.getSubject()); 	// 제목 
+		book.setPrice(bookPayloadDTO.getPrice());  		// 가격 
+		book.setAuthor(bookPayloadDTO.getAuthor()); 	// 저자 
+		book.setPage(bookPayloadDTO.getPage()); 
+		book=bookService.save(book);
+		BookViewDTO bookViewDTO = new BookViewDTO(book.getId(), book.getSubject(), book.getPrice(), book.getAuthor(), book.getPage(), book.getCreatedAt(), book.getUpdatedAt());
+		return ResponseEntity.ok(bookViewDTO);
+	}
+	
+	// 삭제하기
+	@DeleteMapping(value = "/books/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ApiResponse(responseCode = "202", description = "Book deleted")
+	@Operation(summary = "Book delete")
+	public ResponseEntity<?> delete_Book(@PathVariable Long id) {
+		Optional<Book> optionalBook=bookService.findById(id);
+//		Book book;
+//		if(optionalBook.isPresent()) {
+//			book=optionalBook.get();
+//		}else {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//		}
+		if (optionalBook.isEmpty()){
+			throw new NoSuchElementException("Book with id " + id + " not found");
+		}
+		Book book = optionalBook.get();
+		
+		bookService.deleteBook(book);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	}
+	
+	// 파일(Image) 업로드 REST API
+	@Value("${upload.path}")
+	private String uploadPath;
+	// http://localhost:8090/1/1/upload/
+	@PostMapping(value="/{book_id}/{type}/upload", consumes={"multipart/form-data"})
+	public ResponseEntity<?> images_upload(@RequestPart(required = true) MultipartFile[] files,
+				@PathVariable Long book_id, @PathVariable Long type) {
+		// book_id 책이 있는지 확인...
+		Optional<Book> optionalBook = bookService.findById(book_id);
+		if (optionalBook.isEmpty()){
+			throw new NoSuchElementException("Book with id " + book_id + " not found");
+		}
+		Book book = optionalBook.get();
+		
+		// MultipartFile[] files 를 받아 새로운 파일명을 랜덤으부여한다.
+		int length = 10;
+		boolean useLetters = true;
+		boolean useNumber = true;
+		// files는 배열이라 스트림으로 읽어 하나씩 파일로 처리하며, png, jpg, jpec만 허용
+		Arrays.asList(files).stream().forEach(file -> {
+			String contentType = file.getContentType();
+			if(contentType.equals("image/png")
+					|| contentType.equals("image/jpg")
+					|| contentType.equals("image/jpec")) {
+				try {
+					String fileName = file.getOriginalFilename();
+					String generatedString = RandomStringUtils.random(length, useLetters, useNumber);
+					// 새로운 이미지 이름을 만든다.
+					String new_image_name = generatedString + fileName;
+					if(type = 1) {
+						new_image_name = "thumb_" + generatedString + fileName;
+					}
+				} catch(Exception e) {
+					
+				}
+			}
+		});
+		
+		
+		return null;
+	}
+	
+	
+	@GetMapping("/test")
+	@Tag(name="Test API")
+	@Operation(summary="Test 함수 실행", description="test() 함수를 실행합니다.")
+	public String test() {
+		return "Hello, Book User...";
+	}
+	
+}

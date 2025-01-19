@@ -1,2 +1,10 @@
 STS4BootMarkerIndicationColor=56,84,26
 eclipse.preferences.version=1
+org.eclipse.ant.ui.AntElementHyperlinkDetector=true
+org.eclipse.jst.jsf.ui.elhyperlinkdetector=true
+org.eclipse.lsp4e.documentLinkDetector=true
+org.eclipse.lsp4e.hyperlinkDetector=true
+org.eclipse.mylyn.egit.ui.commitHyperlinkDetector=true
+org.eclipse.wst.html.ui.internal.hyperlink.AnchorHyperlinkDetector=true
+org.eclipse.wst.wsdl.ui.internal.text.WSDLHyperlinkDetector=true
+spellingEnabled=false

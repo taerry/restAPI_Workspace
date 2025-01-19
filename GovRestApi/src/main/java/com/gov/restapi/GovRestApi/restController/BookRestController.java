@@ -1,13 +1,17 @@
 package com.gov.restapi.GovRestApi.restController;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +30,26 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gov.restapi.GovRestApi.dto.BookPayloadDTO;
 import com.gov.restapi.GovRestApi.dto.BookViewDTO;
 import com.gov.restapi.GovRestApi.entity.Book;
+import com.gov.restapi.GovRestApi.entity.BookImage;
+import com.gov.restapi.GovRestApi.service.BookImageService;
 import com.gov.restapi.GovRestApi.service.BookService;
+import com.gov.restapi.GovRestApi.util.ImageUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @Tag(name = "API related Book", description = "책을 관리하기 위한 API")
 @RestController
 @RequestMapping("/api")
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class BookRestController {
 	
-	@Autowired
-	private BookService bookService;
+	//@Autowired
+	private final BookService bookService;
+	private final BookImageService bookImageService;
 	
 	@PostMapping(value="/books", consumes="application/json", produces="application/json")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -68,6 +77,7 @@ public class BookRestController {
 //			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 //		}
 		Book book = new Book();
+
 		book.setSubject(bookPayload.getSubject());
 		book.setPrice(bookPayload.getPrice());
 		book.setAuthor(bookPayload.getAuthor());
@@ -167,13 +177,17 @@ public class BookRestController {
 	// http://localhost:8090/1/1/upload/
 	@PostMapping(value="/{book_id}/{type}/upload", consumes={"multipart/form-data"})
 	public ResponseEntity<?> images_upload(@RequestPart(required = true) MultipartFile[] files,
-				@PathVariable Long book_id, @PathVariable Long type) {
+				@PathVariable Long book_id, @PathVariable int type) {
 		// book_id 책이 있는지 확인...
 		Optional<Book> optionalBook = bookService.findById(book_id);
 		if (optionalBook.isEmpty()){
 			throw new NoSuchElementException("Book with id " + book_id + " not found");
 		}
 		Book book = optionalBook.get();
+		
+		//이미지 저장 결과를 저장하기 위한 변수 선언
+		List<String> successImageName = new ArrayList<>();
+		List<String> errorImageName = new ArrayList<>();
 		
 		// MultipartFile[] files 를 받아 새로운 파일명을 랜덤으부여한다.
 		int length = 10;
@@ -185,22 +199,50 @@ public class BookRestController {
 			if(contentType.equals("image/png")
 					|| contentType.equals("image/jpg")
 					|| contentType.equals("image/jpec")) {
+				// 정상적인 이미지인 경우 정보를 저장 : List<String>
+				successImageName.add(file.getOriginalFilename());
+				
 				try {
 					String fileName = file.getOriginalFilename();
 					String generatedString = RandomStringUtils.random(length, useLetters, useNumber);
 					// 새로운 이미지 이름을 만든다.
 					String new_image_name = generatedString + fileName;
-					if(type = 1) {
+					if(type == 1) {
 						new_image_name = "thumb_" + generatedString + fileName;
 					}
-				} catch(Exception e) {
+					String absolute_fileLocation = ImageUtil.makePath(uploadPath, new_image_name, book_id);
+					System.out.println("File Location : " + absolute_fileLocation);
+					Path path = Paths.get(absolute_fileLocation);
 					
+					if(type != 1) {
+						Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+					} 
+					// 데이터베이스에 이미지 정보(BookImage)를 저장
+					BookImage bookImage = new BookImage();
+					bookImage.setOriginalFileName(fileName);
+					bookImage.setFileName(new_image_name);
+					bookImage.setBook(book);	//관계
+					bookImage.setType(type);
+					
+					bookImageService.save(bookImage);
+				} catch(Exception e) {
+					e.printStackTrace();
+					// 이미지 파일이 아닌 경우 정보를 저장 : : List<String>
+					errorImageName.add(file.getOriginalFilename());
 				}
+			} else {
+				// 이미지 파일이 아닌 경우 정보를 저장 : : List<String>
+				errorImageName.add(file.getOriginalFilename());
 			}
 		});
+		HashMap<String, List<String>> result = new HashMap<>();
+		result.put("SUCCESS", successImageName);
+		result.put("ERRORS", errorImageName);
 		
+		List<HashMap<String, List<String>>> response = new ArrayList<>();
+		response.add(result);
 		
-		return null;
+		return ResponseEntity.ok(response);
 	}
 	
 	

@@ -1,7 +1,13 @@
 package com.gov.restapi.GovRestApi.dto;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.gov.restapi.GovRestApi.entity.BookImage;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
