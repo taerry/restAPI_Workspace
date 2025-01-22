@@ -1,5 +1,0 @@
-package com.gov.restapi.GovRestApi.controller;
-
-public class HomeController {
-
-}
