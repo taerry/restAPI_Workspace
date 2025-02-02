@@ -13,10 +13,12 @@ import com.gov.restapi.GovRestApi.entity.Customer;
 import com.gov.restapi.GovRestApi.service.CustomerService;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/customer")
-@AllArgsConstructor
+@RequiredArgsConstructor
+//@AllArgsConstructor
 public class CustomerController {
 	
 	private final CustomerService customerService;
@@ -24,12 +26,12 @@ public class CustomerController {
 	@GetMapping("/register")
     public String register(){
          Customer c=new Customer();
-         c.setUsername("gilnye.hong");
+         c.setUsername("gildong.hong");
          c.setPassword("12345");
-         c.setCustomerName("홍길녀");
-         c.setAge(26);
+         c.setCustomerName("홍길동");
+         c.setAge(24);
          c.setRating("SILVER");
-         c.setOccupation("회사원");
+         c.setOccupation("프리샌서");
 
          Customer cus=customerService.register(c);
          return "redirect:/";
@@ -40,7 +42,7 @@ public class CustomerController {
            List<Customer> cusList=customerService.getAllCustomer();
 //           System.out.println(cusList); // ?
            model.addAttribute("cusList", cusList);
-           return "customerList"; // list.html(404)
+           return "customerList"; // customerList.html(404)
     }
 
     @GetMapping("/detail/{id}") // /customer/detail/2

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asynchronous Transmission Example</title>
+</head>
+<body>
+	<h1>Asynchronous Transmission Example</h1>
+	<button onclick="jsonPlacefetchData()">Fetch Data</button>
+	<div id="output">Waiting for data...</div>
+	<br><br>
+	<div id="output2">Waiting for data...</div>
+	
+	<script>
+		async function jsonPlacefetchData() {
+			document.getElementById("output").innerText = "Fetching data...";
+			// Asynchronous request to a public API (for example, a placeholder API)
+			try {
+				let response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+				// Code here will continue to run while waiting for the server's response
+				let data = await response.json(); // Waits for the response to be converted to JSON
+				// Update the DOM with the fetched data
+				// data = JSON.stringify(data)	//data가 object -> string으로 변경됨
+				document.getElementById("output").innerText = JSON.stringify(data);
+				// data = JSON.parse(data)	//data가 string -> object로 변경됨
+				//document.getElementById("output2").innerText = JSON.parse(data);
+				document.getElementById("output2").innerText = data;
+				//할일 처리
+				let html="<table border='1' width='700' cellpadding='20' cellspacing='5'>";
+					html+="<tr>";
+						html+="<td>userID</td>";
+						html+="<td>"+data.userId+"</td>";
+					html+="</tr>";
+					html+="<tr>";
+						html+="<td>title</td>";
+						html+="<td>"+data.title+"</td>";
+					html+="</tr>";
+					html+="<tr>";
+						html+="<td>body</td>";
+						html+="<td>"+data.body+"</td>";
+					html+="</tr>";
+				html+= "<table>";
+				document.getElementById("output2").innerHTML = html;
+			} catch (error) {
+				console.error("Error fetching data:", error);
+				document.getElementById("output").innerText = "Failed to fetch data.";
+			}
+		}
+	</script>
+</body>
+</html>

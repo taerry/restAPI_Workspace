@@ -10,9 +10,10 @@ import com.gov.restapi.GovRestApi.repository.CustomerRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CustomerService {
 	
 	private final CustomerRepository customerRepository;

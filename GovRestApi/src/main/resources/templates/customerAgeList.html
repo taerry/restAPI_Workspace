@@ -5,7 +5,7 @@
 <title>Customer List</title>
 </head>
 <body>
-	Customer List
+	Customer Age List
 	<table border="1">
 	     <thead>
 	       <tr>
@@ -15,15 +15,15 @@
 	       </tr>
 	     </thead>
 	    <tbody>
-	       <tr th:each="customer : ${cusList}">
-		        <td th:text="${customer.username}">username</td>
-		        <td th:text="${customer.customerName}">customerName</td>
-	           	<td>
+	       <tr th:each="customer : ${ageLists}">
+	        <td th:text="${customer.username}">username</td>
+	        <td th:text="${customer.customerName}">customerName</td>
+	           <td>
 	               <ul>
 	                   <li th:each="review : ${customer.reviews}" th:text="${review.content}">Review content</li>
 	               </ul>
-	           	</td>
-	      	</tr>
+	           </td>
+	      </tr>
 	    </tbody>
 	</table>
 </body>
