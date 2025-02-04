@@ -23,19 +23,19 @@ public class BulletinBoard {
 
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long boardNO;
+	private Long bbNO;
 	private Long customerID;
-	private String boardCategory;
-	private String boardStatus;
-	private String boardTitle;
-	private String boardContent;
+	private String bbTitle;
+	private String bbCategory;
+	private String bbTag;
+	private String bbContent;
+	private String bbImagePath;
+	private String bbStatus;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	private int boardSearchCount;
-	private int boardLikeCount;
-	private int boardScrapCount;
-	private String tagName;
-	private String boardImagePath;
+	private int bbSearchCount;
+	private int bbLikeCount;
+	private int bbScrapCount;
 	
 	@PrePersist		// Entity가 DB에 Insert 되기 전에 호출됨
 	protected void onCreate() {

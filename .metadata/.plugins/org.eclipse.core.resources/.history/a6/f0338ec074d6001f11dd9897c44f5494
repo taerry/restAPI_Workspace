@@ -1,5 +1,0 @@
-package com.gov.restapi.GovRestApi.service;
-
-public class BookImageService {
-
-}

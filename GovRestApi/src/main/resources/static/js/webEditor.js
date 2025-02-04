@@ -6,22 +6,15 @@ const editor = new toastui.Editor({
 	height: '500px',
 	initialEditType: 'wysiwyg',
 	//initialValue: 'Welcome, Toast WebEditor',
-	previewStyle: 'vertical',
-	// toolbarItems 뻬면 기본적인 툴바 다 사용하는 것
-	toolbarItems: [
-	    ['heading', 'bold', 'italic', 'strike'],
-	  //  ['hr', 'quote'],
-	    ['ul', 'ol', 'task', 'indent', 'outdent'],
-	    ['table', 'image', 'link'],
-	  //  ['code', 'codeblock'],
-	    ['scrollSync'],
-	  ]
+	previewStyle: 'vertical'
 });
 // HTML 문자열 생성 
 let vDocu = "";
 vDocu += "<h3>제목</h3>";
 vDocu += "<p>내용</p>";
 editor.setHTML(vDocu);
+const content = editor.getHTML();
+console.log("content : " + content);
 
 document.querySelector('#temp-save').addEventListener('click', function() {
 	const content = editor.getHTML();

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.gov.restapi.GovRestApi.dto.BbReqDto;
 import com.gov.restapi.GovRestApi.entity.BulletinBoard;
 import com.gov.restapi.GovRestApi.repository.BulletinBoardRepository;
 
@@ -16,7 +17,13 @@ public class BulletinBoardService {
 
 	private final BulletinBoardRepository bbRepository;
 	
-	public BulletinBoard save(BulletinBoard bb){
+	public BulletinBoard save(BbReqDto bbReqDto){
+		
+		BulletinBoard bb;
+		
+		//Mapstructure를 이용하여 DTO 객체와 Entity 객체를 매핑하여 데이터 값 전달.
+		
+		
 		return bbRepository.save(bb);
 	}
 	
