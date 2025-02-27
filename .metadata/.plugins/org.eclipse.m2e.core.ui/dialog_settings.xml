@@ -6,6 +6,7 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="D:\restAPI_Workspace\frontendDev"/>
 			<item value="D:\restAPI_Workspace\MakeDev"/>
 		</list>
 		<list key="projectNameTemplate">

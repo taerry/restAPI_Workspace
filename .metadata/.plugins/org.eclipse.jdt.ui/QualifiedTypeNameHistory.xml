@@ -15,7 +15,6 @@
     <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Temporal"/>
     <fullyQualifiedTypeName name="lombok.AllArgsConstructor"/>
-    <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="lombok.extern.slf4j.Slf4j"/>
     <fullyQualifiedTypeName name="jakarta.persistence.EnumType"/>
     <fullyQualifiedTypeName name="java.util.function.Function"/>
@@ -29,4 +28,8 @@
     <fullyQualifiedTypeName name="org.springframework.transaction.annotation.Transactional"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.sping.MakeDev.code.StatusCode"/>
+    <fullyQualifiedTypeName name="org.springframework.http.HttpStatus"/>
+    <fullyQualifiedTypeName name="lombok.Value"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Value"/>
+    <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
 </qualifiedTypeNameHistroy>
