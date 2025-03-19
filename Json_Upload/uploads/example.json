@@ -1,0 +1,12 @@
+[
+    { "id": 1, "name": "John Doe", "email": "john.doe@example.com", "isActive": true },
+    { "id": 2, "name": "Jane Smith", "email": "jane.smith@example.com", "isActive": false },
+    { "id": 3, "name": "Tom Johnson", "email": "tom.johnson@example.com", "isActive": true },
+    { "id": 4, "name": "Lisa Brown", "email": "lisa.brown@example.com", "isActive": true },
+    { "id": 5, "name": "Mike Davis", "email": "mike.davis@example.com", "isActive": false },
+    { "id": 6, "name": "Anna Taylor", "email": "anna.taylor@example.com", "isActive": true },
+    { "id": 7, "name": "Chris Lee", "email": "chris.lee@example.com", "isActive": false },
+    { "id": 8, "name": "Kim Wilson", "email": "kim.wilson@example.com", "isActive": true },
+    { "id": 9, "name": "Pat Moore", "email": "pat.moore@example.com", "isActive": false },
+    { "id": 10, "name": "Sam White", "email": "sam.white@example.com", "isActive": true }
+]

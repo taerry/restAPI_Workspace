@@ -1,0 +1,698 @@
+[거래정보 수신 방법]
+
+Q1. 외부 전자상거래 업체의 쇼핑몰 거래정보를 수집하기 위하여 JSON 형식으로 데이터를 전송받으려 합니다. 
+    수집 방법을 OPEN API형식으로 전송받는 것이 좋을지? JSON 파일 형식으로 전송받는 것이 좋을지? 분석해주세요. 
+    데이터 량은 10000건 이상으로 데이터 사이즈가 매우 큽니다.
+	
+데이터 수집 방법을 결정할 때는 데이터의 양, 실시간성, 유지보수 용이성 등을 고려해야 합니다. 
+아래는 OPEN API 방식과 JSON 파일 방식의 장단점을 분석한 내용입니다:	
+
+1. OPEN API 방식
+	장점:
+	  -	실시간 데이터 전송: 데이터를 실시간으로 요청하고 받을 수 있어 최신 정보를 유지할 수 있습니다.
+	  - 자동화 및 확장성: API 호출을 통해 데이터를 자동으로 수집할 수 있어 대규모 데이터 처리에 적합합니다.
+	  - 유지보수 용이: 데이터 구조 변경 시 API만 업데이트하면 되므로 관리가 간편합니다.
+	  - 보안: 인증 및 권한 관리가 가능해 데이터 접근을 제어할 수 있습니다.
+	
+	단점:
+	  - 복잡성: API를 설계하고 구현하는 데 시간이 걸릴 수 있습니다.
+	  - 네트워크 의존성: 네트워크 상태에 따라 데이터 전송 속도가 영향을 받을 수 있습니다.
+	  - 비용: API 서버 운영 및 유지보수에 추가 비용이 발생할 수 있습니다.
+	  
+2. JSON 파일 방식
+	장점:
+	  - 간단한 구현: JSON 파일을 생성하고 전송하는 방식은 비교적 간단합니다.
+	  - 오프라인 사용 가능: 네트워크 연결 없이도 데이터를 처리할 수 있습니다.
+	  - 저비용: 별도의 서버 운영 없이 파일만 전송하면 되므로 비용이 적게 듭니다.
+	
+	단점:
+	  - 실시간성 부족: 파일 생성 및 전송 주기에 따라 데이터가 최신 상태가 아닐 수 있습니다.
+	  - 대규모 데이터 처리 어려움: 데이터가 많아질수록 파일 크기가 커지고 전송 및 처리 속도가 느려질 수 있습니다.
+	  - 버전 관리 어려움: 파일 형식은 데이터 구조 변경 시 관리가 복잡해질 수 있습니다.	  
+	  
+[추천]
+데이터량이 10,000건 이상이고 실시간성이 중요하다면 OPEN API 방식이 더 적합합니다. 
+API를 통해 데이터를 요청하고 처리하면 대규모 데이터도 효율적으로 관리할 수 있습니다.
+
+반면, 데이터가 정적이고 실시간성이 덜 중요하다면 JSON 파일 방식도 고려할 수 있습니다. 
+다만, 데이터 크기가 매우 크다면 파일 전송 및 처리 속도를 고려해야 합니다.
+
+추가적으로, 데이터 전송 시 압축 기술을 활용하거나, API 호출 시 페이징(pagination)을 적용하면 
+성능을 더욱 최적화할 수 있습니다. 
+---------------------------------------------------------------------------------------------
+
+Q2 : 실시간성이 중요하지는 않습니다. 데이터를 정확히 받는 것이 중요합니다.
+
+실시간성이 중요하지 않고 데이터를 정확히 수집하는 것이 우선이라면, JSON 파일 형식을 사용하는 방식이 
+적합할 가능성이 높습니다. 아래에 이에 대한 분석을 드립니다:
+
+JSON 파일 형식의 장점
+	1. 데이터 무결성 보장:
+	   - 데이터를 한 번에 파일로 전달받기 때문에 API 호출 중 네트워크 지연이나 전송 실패로 인한 
+	     데이터 손실 위험이 없습니다.
+	   - 파일 전송 전에 데이터를 검증(예: 체크섬이나 해시 사용)할 수 있어, 정확성을 높일 수 있습니다.
+	
+	2. 단순한 구현:
+	   - JSON 파일은 기존 시스템과 통합하기 쉽고, 별도의 API 호출 설계가 필요 없습니다.
+	   - 데이터 전송이 완료된 후 데이터를 검증할 수 있어 수동 오류를 줄입니다.
+	
+	3. 대량 데이터 처리에 유리:
+	   - 대량의 데이터를 한 번에 압축하여 전송할 수 있어 효율적입니다.
+	   - 특히 데이터량이 10,000건 이상인 경우, 파일 전송이 API 반복 호출보다 시간이 적게 걸릴 수 있습니다.
+	   	
+	4. 오프라인 처리 가능:
+	   - 파일 형식은 네트워크 연결 없이도 저장 및 백업이 가능하며, 로컬에서 데이터를 처리할 수 있습니다.
+	   
+[추천 방법]
+* 전송 과정: 데이터를 정확히 전달받으려면 JSON 파일 생성 시 검증 절차를 추가하는 것이 중요합니다. 
+
+예를 들어:
+	- 체크섬 또는 해시를 포함하여 데이터 전송 후 파일의 무결성을 확인합니다.
+	- 데이터를 압축(zip 등)하여 파일 크기를 줄이고 전송 중 오류를 최소화합니다.
+
+* 파일 전달: SFTP(Secure File Transfer Protocol) 또는 HTTPS 기반 파일 업로드를 통해 파일을 전송하면 
+  보안성을 유지하면서 데이터를 정확히 받을 수 있습니다.	   
+
+JSON 파일 형식은 실시간 처리가 필요 없는 대규모 데이터 전송에 적합하며, 특히 데이터 정확성이 중요할 때 
+적절한 선택이 될 수 있습니다. 
+
+데이터의 무결성을 확인하기 위해 체크섬(checksum) 또는 해시(hash)를 사용하는 방법은 다음과 같습니다. 
+이 과정은 데이터가 전송 중 손상되거나 변경되지 않았음을 확인하는 데 유용합니다.
+
+1. 체크섬 또는 해시 생성
+	체크섬과 해시는 데이터를 처리하여 고유한 출력값(짧은 문자열)을 생성합니다.
+	일반적으로 사용되는 해시 알고리즘에는 MD5, SHA-1, SHA-256 등이 있으며, 
+	SHA-256과 같은 강력한 알고리즘을 사용하는 것이 보안에 적합합니다.
+	
+	예를 들어, JSON 파일이 생성된 후, 해당 파일을 해시 알고리즘으로 처리하여 해시 값을 생성합니다.
+		예: SHA-256(file_data) → hash_value.
+		
+2. 해시 값 전송
+	생성된 해시 값을 원본 JSON 파일과 함께 수신자에게 전송합니다.
+	JSON 파일과 해시 값을 별도 채널로 전송하여 추가 보안성을 확보할 수도 있습니다.		
+	
+3. 수신자 측 검증
+	수신자가 파일을 받은 후 동일한 해시 알고리즘을 사용하여 수신한 파일의 해시 값을 계산합니다.
+		- 예: SHA-256(received_file_data) → calculated_hash_value.
+
+	송신자에게서 받은 해시 값과 수신자가 계산한 해시 값을 비교합니다.
+		- 일치할 경우: 데이터가 전송 중 변경되지 않았음을 확인.
+		- 불일치할 경우: 데이터가 손상되었거나 변조되었음을 의미하며, 파일을 다시 요청하거나 전송 과정을 점검해야 합니다.	
+		
+5. 추가적인 권장 사항
+	전송 중 암호화: 데이터를 전송할 때 SSL/TLS 프로토콜을 사용하여 파일과 해시 값 모두를 안전하게 보호합니다.
+	압축 및 서명: 파일을 압축하고 전자 서명(Digital Signature)을 추가하면 보안성을 더욱 강화할 수 있습니다.
+	체크섬과 해시는 데이터 무결성을 확인하는 데 있어 필수적인 도구입니다. 
+	
+	이 방식을 잘 설계하면 전송된 데이터의 정확성을 신뢰할 수 있습니다!		
+	
+[이 코드는 파일의 SHA-256 해시 값을 생성하고, 제공된 해시 값과 비교하여 무결성을 확인합니다:]	
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class FileHashValidator {
+    // 파일에서 SHA-256 해시 값을 생성하는 메서드
+    public static String calculateHash(String filePath) throws NoSuchAlgorithmException, IOException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+            byte[] byteArray = new byte[8192];
+            int bytesRead;
+
+            while ((bytesRead = fis.read(byteArray)) != -1) {
+                digest.update(byteArray, 0, bytesRead);
+            }
+        }
+
+        // 해시 값을 Hex 형식의 문자열로 변환
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : digest.digest()) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+
+    // 해시 값을 비교하는 메인 메서드
+    public static void main(String[] args) {
+        String filePath = "example.json"; // 파일 경로
+        String expectedHash = "송신자가 제공한 해시 값"; // 송신자가 제공한 해시 값
+
+        try {
+            String calculatedHash = calculateHash(filePath);
+
+            if (calculatedHash.equals(expectedHash)) {
+                System.out.println("파일의 무결성이 확인되었습니다.");
+            } else {
+                System.out.println("파일이 손상되었거나 변조되었습니다.");
+            }
+        } catch (NoSuchAlgorithmException | IOException e) {
+            System.err.println("오류 발생: " + e.getMessage());
+        }
+    }
+}
+
+[설명]
+1. calculateHash 메서드:
+	- 파일을 읽어 SHA-256 해시 값을 생성합니다.
+	- MessageDigest 클래스를 사용하여 해시 값을 계산합니다.
+
+2. main 메서드:
+	- calculateHash 메서드를 호출하여 파일의 해시 값을 계산합니다.
+	- 계산된 해시 값과 송신자로부터 받은 예상 해시 값을 비교합니다.
+
+3. 에러 처리:
+	- 파일 입출력 오류(IOException)와 알고리즘 지원 오류(NoSuchAlgorithmException)를 처리합니다.
+	
+이 코드는 대규모 데이터 파일에서도 사용 가능하며, 파일 무결성을 확인하는 데 적합합니다.
+
+---------------------------------------------------------------------------------------------
+
+Q3 : JSON 파일을 전송할 수 있는 Spring Boot 기반의 RESP API 코드를 개발해주세요.
+
+아래는 Spring Boot를 사용하여 JSON 파일을 업로드하고 다운로드할 수 있는 REST API의 간단한 예제입니다. 
+이 예제에서는 JSON 파일을 서버에 업로드하고 저장한 후, 필요할 때 파일을 다운로드할 수 있는 기능을 포함하고 있습니다.
+
+1. Gradle 의존성 추가
+[build.gradle 파일에 필요한 의존성을 추가]
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+}
+
+2. Controller 클래스
+JSON 파일을 업로드하고 다운로드할 수 있도록 컨트롤러를 작성합니다:
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@RestController
+@RequestMapping("/api/json")
+public class JsonFileController {
+
+    private static final String FILE_DIRECTORY = "uploads";
+
+    // JSON 파일 업로드 API
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadJsonFile(@RequestParam("file") MultipartFile file) {
+        try {
+            // 업로드 디렉토리 생성
+            Path directoryPath = Paths.get(FILE_DIRECTORY);
+            if (!Files.exists(directoryPath)) {
+                Files.createDirectories(directoryPath);
+            }
+
+            // 파일 저장
+            Path filePath = directoryPath.resolve(file.getOriginalFilename());
+            Files.write(filePath, file.getBytes());
+            return ResponseEntity.ok("파일 업로드 완료: " + file.getOriginalFilename());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("파일 업로드 실패: " + e.getMessage());
+        }
+    }
+
+    // JSON 파일 다운로드 API
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<byte[]> downloadJsonFile(@PathVariable String fileName) {
+        try {
+            File file = new File(FILE_DIRECTORY + "/" + fileName);
+
+            if (!file.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
+
+            FileInputStream fileInputStream = new FileInputStream(file);
+            byte[] fileBytes = fileInputStream.readAllBytes();
+            fileInputStream.close();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+            return new ResponseEntity<>(fileBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+}
+
+
+3. Application 파일 설정
+Spring Boot가 제대로 작동하도록 메인 애플리케이션 클래스를 설정합니다:
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class JsonFileApiApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(JsonFileApiApplication.class, args);
+    }
+}
+
+4. 테스트 방법
+	1) JSON 파일 업로드:
+		- POST 요청: /api/json/upload
+		- 요청 본문: form-data로 JSON 파일 첨부.
+
+	2) JSON 파일 다운로드:
+		- GET 요청: /api/json/download/{fileName}
+		- fileName에 업로드된 파일 이름을 삽입.
+
+5. 결과 파일 저장 경로
+	- 파일은 uploads 디렉토리에 저장됩니다.
+	- 디렉토리는 서버 루트 경로에 생성됩니다.
+
+이 코드는 확장성 있게 설계되어 JSON 파일의 전송 및 관리를 간단히 처리할 수 있습니다.
+
+---------------------------------------------------------------------------------------------
+Q4 : 위에 제공한 REST API를 이용하여 JSON 파일을 전송하는 프로그램을 개발해주세요
+
+아래는 제공된 REST API를 사용하여 JSON 파일을 전송하는 간단한 Java 프로그램의 예입니다. 
+이 프로그램은 Spring Boot 기반 API의 업로드 엔드포인트에 HTTP POST 요청을 보내 JSON 파일을 업로드합니다.
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+import java.io.File;
+
+public class JsonFileUploader {
+
+    private static final String UPLOAD_URL = "http://localhost:8080/api/json/upload"; // REST API 업로드 URL
+
+    public static void main(String[] args) {
+        File jsonFile = new File("example.json"); // 전송할 JSON 파일 경로
+
+        if (!jsonFile.exists()) {
+            System.out.println("파일이 존재하지 않습니다: " + jsonFile.getAbsolutePath());
+            return;
+        }
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpPost uploadFile = new HttpPost(UPLOAD_URL);
+
+            // 파일을 포함한 멀티파트 엔티티 생성
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.addBinaryBody(
+                    "file",
+                    jsonFile,
+                    ContentType.APPLICATION_JSON,
+                    jsonFile.getName()
+            );
+
+            HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+
+            // 요청 실행 및 응답 처리
+            HttpResponse response = httpClient.execute(uploadFile);
+            HttpEntity responseEntity = response.getEntity();
+
+            if (responseEntity != null) {
+                String responseString = EntityUtils.toString(responseEntity);
+                System.out.println("서버 응답: " + responseString);
+            }
+        } catch (Exception e) {
+            System.err.println("파일 업로드 중 오류 발생: " + e.getMessage());
+        }
+    }
+}
+
+
+2. 설명
+	1) HTTP 클라이언트 사용: Apache HttpClient 라이브러리를 사용하여 REST API에 POST 요청을 보냅니다.
+
+	2) 멀티파트 요청 구성:
+		- MultipartEntityBuilder를 사용해 파일 데이터를 요청 본문에 추가합니다.
+		- ContentType.APPLICATION_JSON을 지정하여 JSON 파일임을 명시합니다.
+
+	3) REST API 업로드 URL:
+		- UPLOAD_URL 변수에 업로드 엔드포인트 경로를 설정합니다. (예: http://localhost:8080/api/json/upload).
+		
+3. 사전 준비
+Apache HttpClient 라이브러리를 사용하려면 Maven 프로젝트에 다음 의존성을 추가하세요:		
+
+<dependency>
+    <groupId>org.apache.httpcomponents.client5</groupId>
+    <artifactId>httpclient5</artifactId>
+    <version>5.1</version>
+</dependency>
+
+4. 테스트 방법
+	1. example.json 파일을 준비하여 프로그램이 접근 가능한 경로에 저장합니다.
+	2. 프로그램을 실행하면 JSON 파일이 REST API를 통해 업로드됩니다.
+	3. 서버 응답을 콘솔에 출력하여 업로드 결과를 확인합니다.
+
+이 코드로 JSON 파일을 성공적으로 전송할 수 있습니다.
+
+
+Q5 : JSON 파일을 전송하기 전에 JSON 파일에 대한 Schema 검증을 하는 프로그램을 개발해주세요.
+
+다음은 JSON 파일을 업로드하기 전에 JSON Schema를 검증하는 Java 프로그램의 예입니다. 
+이 프로그램은 JSON 파일의 구조와 데이터가 사전에 정의된 JSON Schema에 적합한지 확인합니다.
+
+1. JSON Schema Validator 의존성 추가
+JSON Schema 검증을 위해 everit-org/json-schema 라이브러리를 사용할 수 있습니다. 
+Maven 프로젝트에 다음 의존성을 추가하세요:
+
+<dependency>
+    <groupId>org.everit.json</groupId>
+    <artifactId>org.everit.json.schema</artifactId>
+    <version>1.14.2</version>
+</dependency>
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20210307</version>
+</dependency>
+
+
+2. JSON Schema 검증 코드
+다음은 JSON 파일을 검증하는 Java 프로그램입니다:
+
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class JsonSchemaValidator {
+
+    public static void main(String[] args) {
+        String schemaPath = "schema.json"; // JSON Schema 파일 경로
+        String jsonPath = "data.json";    // 검증할 JSON 파일 경로
+
+        try {
+            // JSON Schema 로드
+            FileInputStream schemaStream = new FileInputStream(new File(schemaPath));
+            JSONObject schemaObject = new JSONObject(new JSONTokener(schemaStream));
+            Schema schema = SchemaLoader.load(schemaObject);
+
+            // JSON 파일 로드
+            FileInputStream jsonStream = new FileInputStream(new File(jsonPath));
+            JSONObject jsonData = new JSONObject(new JSONTokener(jsonStream));
+
+            // JSON 검증
+            schema.validate(jsonData);
+            System.out.println("JSON 파일이 Schema에 적합합니다!");
+
+        } catch (IOException e) {
+            System.err.println("파일을 읽을 수 없습니다: " + e.getMessage());
+        } catch (org.everit.json.schema.ValidationException e) {
+            System.err.println("JSON 검증 실패: " + e.getMessage());
+        }
+    }
+}
+
+3. Schema 예제 (schema.json)
+아래는 JSON 데이터 검증을 위한 Schema 파일 예입니다:
+
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "isActive": { "type": "boolean" }
+    },
+    "required": ["id", "name", "email"],
+    "additionalProperties": false
+}
+
+4. JSON 데이터 예제 (data.json)
+검증할 JSON 파일의 예는 다음과 같습니다:
+
+{
+    "id": 1,
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "isActive": true
+}
+
+5. 동작 원리
+	1) Schema 로드: JSON Schema를 파일에서 읽어와 SchemaLoader를 통해 Schema 객체로 변환합니다.
+
+	2) JSON 데이터 로드: 검증할 JSON 데이터를 파일에서 읽어옵니다.
+
+	3) 검증 실행: schema.validate(jsonData)를 호출하여 JSON 파일이 Schema에 적합한지 확인합니다.
+
+	4) 결과 출력:
+
+		- JSON이 유효하면 성공 메시지를 출력합니다.
+		- 검증 실패 시 상세한 오류 메시지를 표시합니다.
+		
+[확장 가능성]
+- 실시간 API 통합: JSON 데이터를 REST API로부터 받아서 검증할 수도 있습니다.
+- 에러 처리 개선: 특정 필드에서의 검증 오류를 사용자에게 명확히 전달하도록 로직을 확장할 수 있습니다.
+
+이 코드로 JSON 파일을 업로드하기 전 구조적 무결성을 보장할 수 있습니다.		
+
+
+Q6 : 에러 처리 개선을 위하여 특정 필드에서의 검증 오류를 사용자에게 명확히 전달하도록 프로그램을 보완해 주세요
+
+다음은 JSON 검증 중 특정 필드에서 발생한 오류를 명확히 전달하기 위해 수정된 Java 프로그램입니다. 
+각 필드의 검증 오류를 사용자에게 상세히 전달하도록 ValidationException을 처리하는 로직을 추가했습니다.
+
+개선된 JSON Schema 검증 코드
+
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+
+public class JsonSchemaValidatorWithDetailedErrors {
+
+    public static void main(String[] args) {
+        String schemaPath = "schema.json"; // JSON Schema 파일 경로
+        String jsonPath = "data.json";    // 검증할 JSON 파일 경로
+
+        try {
+            // JSON Schema 로드
+            FileInputStream schemaStream = new FileInputStream(new File(schemaPath));
+            JSONObject schemaObject = new JSONObject(new JSONTokener(schemaStream));
+            Schema schema = SchemaLoader.load(schemaObject);
+
+            // JSON 파일 로드
+            FileInputStream jsonStream = new FileInputStream(new File(jsonPath));
+            JSONObject jsonData = new JSONObject(new JSONTokener(jsonStream));
+
+            // JSON 검증
+            schema.validate(jsonData);
+            System.out.println("JSON 파일이 Schema에 적합합니다!");
+
+        } catch (ValidationException e) {
+            // 검증 오류 처리
+            System.err.println("JSON 검증 실패: " + e.getMessage());
+            printDetailedErrors(e);
+        } catch (IOException e) {
+            System.err.println("파일을 읽을 수 없습니다: " + e.getMessage());
+        }
+    }
+
+    // 상세 검증 오류 출력 메서드
+    private static void printDetailedErrors(ValidationException exception) {
+        System.err.println("다음과 같은 검증 오류가 발견되었습니다:");
+
+        // 최상위 오류 출력
+        System.err.println("- " + exception.getMessage());
+
+        // 하위 오류 순회 및 출력
+        List<ValidationException> subErrors = exception.getCausingExceptions();
+        for (ValidationException subError : subErrors) {
+            System.err.println("  - " + subError.getMessage());
+            if (subError.getPointerToViolation() != null) {
+                System.err.println("    (위치: " + subError.getPointerToViolation() + ")");
+            }
+        }
+    }
+}
+
+
+[개선 사항 설명]
+1. ValidationException 세부 처리:
+	- 최상위 검증 오류와 하위 오류를 분리하여 사용자에게 단계적으로 제공합니다.
+	- 하위 오류를 포함하는 경우 반복문을 통해 모든 세부 오류를 출력합니다.
+
+2. 위치 정보 추가:
+	- getPointerToViolation() 메서드를 사용하여 오류가 발생한 JSON의 위치를 식별합니다.
+	- 예: /name, /email 등 특정 필드의 위치가 출력됩니다.
+	
+	
+예시 출력
+data.json 파일이 다음과 같다고 가정합시다:
+{
+    "id": "not-an-integer",
+    "name": 123,
+    "email": "invalid-email",
+    "isActive": true
+}
+
+검증 결과 출력 예시:
+JSON 검증 실패: JSONObject[“id”]의 값이 타입 “integer”에 적합하지 않습니다.
+다음과 같은 검증 오류가 발견되었습니다:
+- JSONObject["id"]의 값이 타입 "integer"에 적합하지 않습니다.
+  - (위치: /id)
+- JSONObject["name"]의 값이 타입 "string"에 적합하지 않습니다.
+  - (위치: /name)
+- JSONObject["email"]의 값이 "email" 형식에 적합하지 않습니다.
+  - (위치: /email)
+
+[장점]
+- 사용자에게 구체적인 오류 메시지를 제공하여 문제를 쉽게 파악할 수 있습니다.
+- 필드별 오류와 위치를 명확히 알려주어 디버깅 효율성을 높입니다.
+
+Q7 : 위 예제에서 JSON 데이터가 10개의 데이터 셋이 배열 형식으로 되어 있는 것을 검증하는 프로그램을 개발해주세요.
+
+아래는 JSON 데이터가 10개의 데이터 셋을 배열 형식으로 포함하고 있는지 검증하는 Java 프로그램입니다. 
+이 프로그램은 JSON 파일을 읽고 배열의 길이가 10인지 확인하며, 
+각 데이터 셋에 대해 JSON Schema를 적용해 구조 검증을 수행합니다.
+
+1. JSON Schema 검증 라이브러리 추가
+Maven 프로젝트의 pom.xml에 필요한 의존성을 추가합니다:
+
+<dependency>
+    <groupId>org.everit.json</groupId>
+    <artifactId>org.everit.json.schema</artifactId>
+    <version>1.14.2</version>
+</dependency>
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20210307</version>
+</dependency>
+
+2. 프로그램 코드
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class JsonArrayValidator {
+
+    public static void main(String[] args) {
+        String schemaPath = "schema.json";  // JSON Schema 파일 경로
+        String jsonPath = "data.json";     // 검증할 JSON 파일 경로
+
+        try {
+            // JSON Schema 로드
+            FileInputStream schemaStream = new FileInputStream(new File(schemaPath));
+            JSONObject schemaObject = new JSONObject(new JSONTokener(schemaStream));
+            Schema schema = SchemaLoader.load(schemaObject);
+
+            // JSON 데이터 로드
+            FileInputStream jsonStream = new FileInputStream(new File(jsonPath));
+            JSONArray jsonArray = new JSONArray(new JSONTokener(jsonStream));
+
+            // 배열 크기 확인
+            if (jsonArray.length() != 10) {
+                System.err.println("검증 실패: JSON 배열의 크기가 10이 아닙니다. 현재 크기: " + jsonArray.length());
+                return;
+            }
+
+            // 각 데이터 셋 검증
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonData = jsonArray.getJSONObject(i);
+                try {
+                    schema.validate(jsonData); // 개별 데이터 셋 검증
+                    System.out.println("데이터 셋 " + (i + 1) + " 검증 성공!");
+                } catch (ValidationException e) {
+                    System.err.println("데이터 셋 " + (i + 1) + " 검증 실패: " + e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("파일 읽기 실패: " + e.getMessage());
+        }
+    }
+}
+
+3. JSON Schema 예제 (schema.json)
+각 데이터 셋이 다음 조건을 만족한다고 가정합니다:
+
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "isActive": { "type": "boolean" }
+    },
+    "required": ["id", "name", "email"],
+    "additionalProperties": false
+}
+
+
+4. JSON 데이터 예제 (data.json)
+다음은 검증할 JSON 데이터의 예입니다:
+[
+    { "id": 1, "name": "John Doe", "email": "john.doe@example.com", "isActive": true },
+    { "id": 2, "name": "Jane Smith", "email": "jane.smith@example.com", "isActive": false },
+    { "id": 3, "name": "Tom Johnson", "email": "tom.johnson@example.com", "isActive": true },
+    { "id": 4, "name": "Lisa Brown", "email": "lisa.brown@example.com", "isActive": true },
+    { "id": 5, "name": "Mike Davis", "email": "mike.davis@example.com", "isActive": false },
+    { "id": 6, "name": "Anna Taylor", "email": "anna.taylor@example.com", "isActive": true },
+    { "id": 7, "name": "Chris Lee", "email": "chris.lee@example.com", "isActive": false },
+    { "id": 8, "name": "Kim Wilson", "email": "kim.wilson@example.com", "isActive": true },
+    { "id": 9, "name": "Pat Moore", "email": "pat.moore@example.com", "isActive": false },
+    { "id": 10, "name": "Sam White", "email": "sam.white@example.com", "isActive": true }
+]
+
+
+5. 주요 특징
+	1) 배열 검증:
+		- JSON 데이터가 배열 형식인지 확인하고, 배열 크기가 정확히 10인지 확인합니다.
+
+	2) 개별 데이터 검증:
+	- 배열의 각 요소에 대해 schema.validate()를 사용하여 JSON Schema에 부합하는지 검증합니다.
+	- 오류가 발생한 경우 해당 데이터 셋의 번호와 오류 메시지를 출력합니다.		
+	
+6. 실행 결과 예시
+
+배열 크기가 맞지 않거나 데이터 셋 중 하나가 잘못된 경우:
+-> 검증 실패: JSON 배열의 크기가 10이 아닙니다. 현재 크기: 8
+
+혹은 데이터가 잘못된 경우:
+-> 데이터 셋 3 검증 실패: JSONObject["email"]의 값이 "email" 형식에 적합하지 않습니다.
+
+이 프로그램은 데이터 배열의 크기와 구조를 모두 확인하기 때문에 안정적인 JSON 데이터 검증을 제공합니다.
+
+
+	
