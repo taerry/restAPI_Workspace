@@ -11,7 +11,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-
 public class JsonFileUploader {
 	
 	private static final String UPLOAD_URL = "http://localhost:9210/api/json/upload"; // REST API 업로드 URL

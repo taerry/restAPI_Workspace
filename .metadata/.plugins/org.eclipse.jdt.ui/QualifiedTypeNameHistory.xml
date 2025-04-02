@@ -4,10 +4,8 @@
     <fullyQualifiedTypeName name="org.hibernate.sql.model.ast.builder.TableDeleteBuilderStandard"/>
     <fullyQualifiedTypeName name="java.nio.file.StandardCopyOption"/>
     <fullyQualifiedTypeName name="com.gov.restapi.GovRestApi.entity.Book"/>
-    <fullyQualifiedTypeName name="java.io.File"/>
     <fullyQualifiedTypeName name="java.net.http.HttpHeaders"/>
     <fullyQualifiedTypeName name="org.springframework.http.MediaType"/>
-    <fullyQualifiedTypeName name="org.springframework.http.HttpHeaders"/>
     <fullyQualifiedTypeName name="java.nio.file.Path"/>
     <fullyQualifiedTypeName name="jakarta.persistence.CascadeType"/>
     <fullyQualifiedTypeName name="java.sql.Date"/>
@@ -36,4 +34,8 @@
     <fullyQualifiedTypeName name="lombok.AllArgsConstructor"/>
     <fullyQualifiedTypeName name="lombok.Builder"/>
     <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="org.springframework.http.HttpHeaders"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="org.apache.hc.core5.http.HttpResponse"/>
+    <fullyQualifiedTypeName name="org.apache.http.HttpResponse"/>
 </qualifiedTypeNameHistroy>

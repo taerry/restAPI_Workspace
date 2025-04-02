@@ -6,6 +6,7 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="D:\restAPI_Workspace\Json_Upload"/>
 			<item value="D:\restAPI_Workspace\frontendDev"/>
 			<item value="D:\Spring_workspace\MySpringRepository\restAPI_Workspace\json"/>
 			<item value="D:\Spring_workspace\MySpringRepository\restAPI_Workspace\JsonValidator"/>
@@ -25,6 +26,7 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="D:\restAPI_Workspace"/>
 			<item value="D:\restAPI_Workspace\MakeDev\src\main\java\com\sping\MakeDev\service"/>
 		</list>
 		<list key="projectNameTemplate">
@@ -37,6 +39,7 @@
 		</list>
 	</section>
 	<section name="MavenProjectWizardArchetypePage">
+		<item key="catalog" value="https://repo1.maven.org/maven2/archetype-catalog.xml"/>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
 			<item value="[artifactId]-TRUNK"/>
@@ -67,10 +70,12 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="com.json"/>
 		</list>
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="uploadJsonApp"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
